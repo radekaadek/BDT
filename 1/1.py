@@ -3,9 +3,6 @@ import pandas as pd
 import numpy as np
 
 
-# load data from BDOT_analiza_zabudowa.gdb
-# /home/ard/prg/topo/venv/lib64/python3.11/site-packages/pyogrio/geopandas.py:265: UserWarning: More than one layer found in 'BDOT_analiza_zabudowa.gdb': 'L4_1_BDOT10k__OT_SWRS_L' (default), 'L4_1_BDOT10k__OT_SWRM_L', 'L4_1_BDOT10k__OT_SUPR_L', 'L4_1_BDOT10k__OT_SULN_L', 'L4_1_BDOT10k__OT_SKTR_L', 'L4_1_BDOT10k__OT_SKRW_P', 'L4_1_BDOT10k__OT_SKDR_L', 'L4_1_BDOT10k__OT_PTZB_A', 'L4_1_BDOT10k__OT_PTWP_A', 'L4_1_BDOT10k__OT_PTUT_A', 'L4_1_BDOT10k__OT_PTTR_A', 'L4_1_BDOT10k__OT_PTRK_A', 'L4_1_BDOT10k__OT_PTPL_A', 'L4_1_BDOT10k__OT_PTNZ_A', 'L4_1_BDOT10k__OT_PTLZ_A', 'L4_1_BDOT10k__OT_PTKM_A', 'L4_1_BDOT10k__OT_PTGN_A', 'L4_1_BDOT10k__OT_ADMS_A', 'L4_1_BDOT10k__OT_BUWT_P'. Specify layer parameter to avoid this warning.
-# select adms_a layer
 layer = "L4_1_BDOT10k__OT_ADMS_A"
 file_name = "BDOT_analiza_zabudowa.gdb"
 district_data = gpd.read_file(file_name, layer=layer)
