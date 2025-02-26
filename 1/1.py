@@ -13,8 +13,13 @@ district_name = 'Koniuchy'
 district = district_data[district_data['nazwa'] == district_name]
 
 # 1) area
-area = district['Shape_Area']
+zabudowa_name = 'L4_1_BDOT10k__OT_PTZB_A'
+zabudowa = gpd.read_file(file_name, layer=zabudowa_name)
+zabudowa = zabudowa.clip(district)
+area = zabudowa['Shape_Area'].sum()
 print(f"Powierzchnia zabudowy mieszkaniowej w {district_name} to {area.sum():.2f} m²")
+# save to file
+zabudowa.to_file("zabudowa.gpkg")
 
 # 2) 
 # skdr
@@ -30,6 +35,7 @@ length_sum = roads['Shape_Length'].sum()
 district_area = district['Shape_Area'].sum()
 road_density = length_sum / district_area * 1000
 print(f'Gęstość dróg gminnych i powiatowych: {road_density:.3f} m/km²')
+roads.to_file("drogi.gpkg")
 
 # 3)
 teren_upraw_trwalych_name = 'L4_1_BDOT10k__OT_PTUT_A'
@@ -57,6 +63,8 @@ diff_df.to_file('diffs.gpkg')
 area_sum = 0
 for layer in objects:
     layer = gpd.clip(layer, diff_df)
+    # change layer epsg to 2180
+    layer.to_crs(epsg=2180, inplace=True)
     area_sum += layer.geometry.area.sum()
 
 print(f'Powierzchnia terenów upraw trwałych, wód powierzchniowych oraz obszarów trawiastych w promieniu 0,8 oraz 1,8 km od wybranej wysokiej budowli technicznej: {area_sum:.2f} m²')
