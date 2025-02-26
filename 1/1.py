@@ -1,7 +1,4 @@
 import geopandas as gpd
-import pandas as pd
-import numpy as np
-
 
 layer = "L4_1_BDOT10k__OT_ADMS_A"
 file_name = "BDOT_analiza_zabudowa.gdb"
@@ -24,7 +21,6 @@ zabudowa.to_file("zabudowa.gpkg")
 # 2) 
 # skdr
 roads_name = 'L4_1_BDOT10k__OT_SKDR_L'
-
 road_data = gpd.read_file(file_name, layer=roads_name)
 
 
@@ -33,7 +29,9 @@ roads = gpd.clip(road_data, district)
 roads = roads[roads['katZarzadz'].isin(['P', 'G'])]
 length_sum = roads['Shape_Length'].sum()
 district_area = district['Shape_Area'].sum()
-road_density = length_sum / district_area * 1000
+print(district_area)
+print(length_sum)
+road_density = length_sum / district_area * 1000 * 1000
 print(f'Gęstość dróg gminnych i powiatowych: {road_density:.3f} m/km²')
 roads.to_file("drogi.gpkg")
 
