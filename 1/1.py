@@ -49,7 +49,6 @@ objects = [ptut_layer, ptwp_layer, pttr_layer]
 
 wysokie_budowle_techniczne_name = 'L4_1_BDOT10k__OT_BUWT_P'
 buwt_layer = gpd.read_file(file_name, layer=wysokie_budowle_techniczne_name)
-# select all with idIIP_BT_I = 'PL.PZGIK.BDOT10k.BUWTP.04.6312'
 buwt_layer = buwt_layer[buwt_layer['idIIP_BT_I'] == 'PL.PZGIK.BDOT10k.BUWTP.04.6312']
 
 # create 2 buffers
@@ -61,13 +60,19 @@ diff_df = gpd.GeoDataFrame(geometry=diff_geoms)
 # save to diffs.gpkg
 diff_df.to_file('diffs.gpkg')
 area_sum = 0
-for layer in objects:
+for i, layer in enumerate(objects):
     layer = gpd.clip(layer, diff_df)
     # change layer epsg to 2180
     layer.to_crs(epsg=2180, inplace=True)
     area_sum += layer.geometry.area.sum()
+    objects[i] = layer
 
 print(f'Powierzchnia terenów upraw trwałych, wód powierzchniowych oraz obszarów trawiastych w promieniu 0,8 oraz 1,8 km od wybranej wysokiej budowli technicznej: {area_sum:.2f} m²')
+# save to diffs.gpkg
+diff_df.to_file('diffs.gpkg')
+objects[0].to_file('ptut.gpkg')
+objects[1].to_file('ptwp.gpkg')
+objects[2].to_file('pttr.gpkg')
 
 # cli
 
